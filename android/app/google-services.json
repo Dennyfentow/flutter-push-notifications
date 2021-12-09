@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "818484536144",
+    "project_id": "dev-meetups-78c19",
+    "storage_bucket": "dev-meetups-78c19.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:818484536144:android:d86a481375ae2840a28255",
+        "android_client_info": {
+          "package_name": "br.com.alura.meetups"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "818484536144-kmnd2sbetr2hi26f8g3gcfb41amsdftm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAa9tp5cnbw5RUR9xhiDT7vDr-QuXoUi4Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "818484536144-kmnd2sbetr2hi26f8g3gcfb41amsdftm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
