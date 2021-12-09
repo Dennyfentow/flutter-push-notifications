@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:meetups/models/device.dart';
 import 'package:meetups/models/event.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,4 +14,20 @@ Future<List<Event>> getAllEvents() async {
   } else {
     throw Exception('Falha ao carregar os eventos');
   }
+}
+
+void sendDevice(Device device) async {
+  final response = await http.post(
+    Uri.parse('$baseUrl/devices'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'token': device.token ?? '',
+      'modelo': device.model ?? '',
+      'marca': device.brand ?? '',
+    }),
+  );
+
+  // return response;
 }

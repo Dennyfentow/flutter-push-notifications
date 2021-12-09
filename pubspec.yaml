@@ -30,7 +30,8 @@ dependencies:
   cupertino_icons: 
   http:
   firebase_core: 
-  firebase_auth: 
+  # firebase_auth: 
+  firebase_messaging: ^11.2.3
 
 dev_dependencies:
   flutter_test:
