@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:meetups/models/device.dart';
 import 'package:meetups/models/event.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 const String baseUrl = 'http://192.168.8.179:8080/api';
 
@@ -29,5 +30,14 @@ void sendDevice(Device device) async {
     }),
   );
 
-  // return response;
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString('pushToken', device.token!);
+
+  prefs.setBool('tokenSent', false);
+
+  if (response.statusCode != 200) {
+    throw Exception('Falha ao criar o dispositivo');
+  } else {
+    prefs.setBool('tokenSent', true);
+  }
 }

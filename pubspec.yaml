@@ -33,7 +33,8 @@ dependencies:
   # firebase_auth: 
   firebase_messaging: ^11.2.3
   device_info_plus:
-
+  shared_preferences:
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -7,6 +7,7 @@ import 'package:meetups/models/device.dart';
 import 'package:meetups/screens/events_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,24 +23,33 @@ void main() async {
 }
 
 void setPushToken(String? token) async {
-  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-  String? brand;
-  String? model;
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? prefsToken = prefs.getString('pushToken');
+  bool? prefSent = prefs.getBool('tokenSent');
+  print('Prefs token: $prefsToken');
 
-  if (Platform.isAndroid) {
-    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    print('Rodando no ${androidInfo.model}');
-    brand = androidInfo.brand;
-    model = androidInfo.model;
-  } else {
-    IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-    print('Rodando no ${iosInfo.utsname.machine}');
-    model = iosInfo.utsname.machine;
-    brand = 'Apple';
+  if (prefsToken != token || (prefsToken == token && prefSent == false)) {
+    print('Enviando token para o servidor...');
+
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    String? brand;
+    String? model;
+
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      print('Rodando no ${androidInfo.model}');
+      brand = androidInfo.brand;
+      model = androidInfo.model;
+    } else {
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      print('Rodando no ${iosInfo.utsname.machine}');
+      model = iosInfo.utsname.machine;
+      brand = 'Apple';
+    }
+
+    Device device = Device(brand: brand, model: model, token: token);
+    sendDevice(device);
   }
-
-  Device device = Device(brand: brand, model: model, token: token);
-  sendDevice(device);
 }
 
 class App extends StatelessWidget {
