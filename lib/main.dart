@@ -42,6 +42,17 @@ void _startPushNotificationsHandler(FirebaseMessaging messaging) async {
   String? token = await messaging.getToken();
   print('TOKEN: $token');
   _setPushToken(token);
+
+  // Foreground
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print('Recebi mensagem enquanto estava com o App aberto');
+    print('Dados da mensagem: ${message.data}');
+
+    if (message.notification != null) {
+      print(
+          'A mensagem também continha uma notificação: ${message.notification!.title}, ${message.notification!.body}');
+    }
+  });
 }
 
 void _setPushToken(String? token) async {
