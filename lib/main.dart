@@ -53,6 +53,9 @@ void _startPushNotificationsHandler(FirebaseMessaging messaging) async {
           'A mensagem também continha uma notificação: ${message.notification!.title}, ${message.notification!.body}');
     }
   });
+
+  // Background
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 }
 
 void _setPushToken(String? token) async {
@@ -94,4 +97,8 @@ class App extends StatelessWidget {
       home: EventsScreen(),
     );
   }
+}
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print('Mensagem recebida em background: ${message.notification}');
 }
