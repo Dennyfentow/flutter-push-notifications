@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -56,6 +58,12 @@ void _startPushNotificationsHandler(FirebaseMessaging messaging) async {
 
   // Background
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  // Terminated
+  var notification = await FirebaseMessaging.instance.getInitialMessage();
+  if (notification!.data['message'].length > 0) {
+    showMyDialog(notification.data['message']);
+  }
 }
 
 void _setPushToken(String? token) async {
@@ -95,10 +103,31 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Dev meetups',
       home: EventsScreen(),
+      navigatorKey: navigatorKey,
     );
   }
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('Mensagem recebida em background: ${message.notification}');
+}
+
+// Criar tela de mensagem
+void showMyDialog(String message) {
+  Widget okButton = OutlinedButton(
+    onPressed: () => Navigator.pop(navigatorKey.currentContext!),
+    child: Text('Ok!'),
+  );
+
+  AlertDialog alerta = AlertDialog(
+    title: Text('Promoção imperdível'),
+    content: Text(message),
+    actions: [okButton],
+  );
+
+  showDialog(
+      context: navigatorKey.currentContext!,
+      builder: (BuildContext contextDialog) {
+        return alerta;
+      });
 }
