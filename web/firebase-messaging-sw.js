@@ -2,13 +2,13 @@ importScripts("https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js");
 importScripts("https://www.gstatic.com/firebasejs/8.6.1/firebase-messaging.js");
 
 firebase.initializeApp({
-  apiKey: "AIzaSyAgUhHU8wSJgO5MVNy95tMT07NEjzMOfz0",
-  authDomain: "react-native-firebase-testing.firebaseapp.com",
-  databaseURL: "https://react-native-firebase-testing.firebaseio.com",
-  projectId: "react-native-firebase-testing",
-  storageBucket: "react-native-firebase-testing.appspot.com",
-  messagingSenderId: "448618578101",
-  appId: "1:448618578101:web:ecaffe2bc4511738",
+  apiKey: "AIzaSyDqh_P0XISW7QJ1a0di4NTgT0icmy1EQeA",
+  authDomain: "dev-meetups-78c19.firebaseapp.com",
+  projectId: "dev-meetups-78c19",
+  storageBucket: "dev-meetups-78c19.appspot.com",
+  messagingSenderId: "818484536144",
+  appId: "1:818484536144:web:43887e986bbfcabea28255",
+  measurementId: "G-7HM6N6FXBB",
 });
 // Necessary to receive background messages:
 const messaging = firebase.messaging();

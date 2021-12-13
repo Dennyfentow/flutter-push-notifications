@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:meetups/http/web.dart';
 import 'package:meetups/models/device.dart';
 import 'package:meetups/screens/events_screen.dart';
@@ -13,7 +14,18 @@ final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    // Replace with actual values
+    options: FirebaseOptions(
+      apiKey: "AIzaSyDqh_P0XISW7QJ1a0di4NTgT0icmy1EQeA",
+      authDomain: "dev-meetups-78c19.firebaseapp.com",
+      projectId: "dev-meetups-78c19",
+      storageBucket: "dev-meetups-78c19.appspot.com",
+      messagingSenderId: "818484536144",
+      appId: "1:818484536144:web:43887e986bbfcabea28255",
+      measurementId: "G-7HM6N6FXBB",
+    ),
+  );
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   NotificationSettings settings = await messaging.requestPermission(
@@ -61,7 +73,9 @@ void _startPushNotificationsHandler(FirebaseMessaging messaging) async {
 
   // Terminated
   var notification = await FirebaseMessaging.instance.getInitialMessage();
-  if (notification!.data['message'].length > 0) {
+  if (notification != null &&
+      notification.data['message'] != null &&
+      notification.data['message'].length > 0) {
     showMyDialog(notification.data['message']);
   }
 }
@@ -78,13 +92,17 @@ void _setPushToken(String? token) async {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     String? brand;
     String? model;
-
-    if (Platform.isAndroid) {
+    if (kIsWeb) {
+      WebBrowserInfo webInfo = await deviceInfo.webBrowserInfo;
+      brand = webInfo.vendor;
+      model = webInfo.userAgent;
+      print('Rodando no ${webInfo.userAgent}');
+    } else if (Platform.isAndroid) {
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
       print('Rodando no ${androidInfo.model}');
       brand = androidInfo.brand;
       model = androidInfo.model;
-    } else {
+    } else if (Platform.isIOS) {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
       print('Rodando no ${iosInfo.utsname.machine}');
       model = iosInfo.utsname.machine;
